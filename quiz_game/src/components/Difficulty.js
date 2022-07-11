@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Difficulty0(props) {
-    const [chosenDifficulty, chooseDifficulty] = React.useState("Easy")
+    const [chosenDifficulty, chooseDifficulty] = React.useState("easy")
 
 
     function handleChooseDifficulty(event) {
