@@ -1,0 +1,42 @@
+body{
+  display: flex;
+  justify-content: center;
+  font-family: Inter;
+}
+
+#root{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  background-image: url("./images/bg.jpg");
+  width: 480px;
+  height: 430px;
+  border: 1px solid   #1a8cff;
+  
+}
+
+.start-screen{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+}
+
+.start-screen button{
+  width: 90px;
+  height: 35px;
+  border-radius: 7px;
+  background-color: #8791c5;
+  color: white;
+  border: none;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.start-screen h1{
+  font-size: 40px;
+}
+
+.start-screen p{
+  font-weight: 600;
+}
