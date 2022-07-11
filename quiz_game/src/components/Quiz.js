@@ -41,6 +41,9 @@ export default function Quiz(props) {
 
         const formatedQuestions = props.questions.map(el => {
                 const line = shuffle([...el.incorrect_answers, el.correct_answer])
+                setArrayOfQuestions(prevArray => [...prevArray, line])
+            })
+
                 // 
             //     return (
             //         <div>
@@ -51,7 +54,6 @@ export default function Quiz(props) {
             //             <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line.pop(randInt(0, 1))}</button>
             //         </div>
             //     )
-            })
         getFormattedQuestions(formatedQuestions)
         }, [props.questions])
 
@@ -66,6 +68,7 @@ export default function Quiz(props) {
         }
         props.submitAnswers(questionValues)
     }
+    console.log(arrayOfQuestions)
 
     return (
         <div className="quiz">
