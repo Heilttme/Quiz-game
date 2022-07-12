@@ -25,10 +25,10 @@ export default function Quiz(props) {
         return array;
       }
 
-    function randInt(min, max){
-        return Math.floor(Math.random() * (max - min + 1) + min)
-    }
 
+    const formatedQuestions = props.questions.map(el => {
+            const line = shuffle([...el.incorrect_answers, el.correct_answer])
+            setArrayOfQuestions(prevArray => [...prevArray, line])
 
     React.useEffect(() => {
         function chooseAnswer(event, correct){
@@ -39,23 +39,20 @@ export default function Quiz(props) {
             }
         }
 
-        const formatedQuestions = props.questions.map(el => {
-                const line = shuffle([...el.incorrect_answers, el.correct_answer])
-                setArrayOfQuestions(prevArray => [...prevArray, line])
-            })
 
-                // 
-            //     return (
-            //         <div>
-            //             <h5>{el.question}</h5>
-            //             <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line.pop(randInt(0, 4))}</button>
-            //             <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line.pop(randInt(0, 3))}</button>
-            //             <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line.pop(randInt(0, 2))}</button>
-            //             <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line.pop(randInt(0, 1))}</button>
-            //         </div>
-            //     )
+                
+                return (
+                    <div>
+                        <h5>{el.question}</h5>
+                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[0]}</button>
+                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[1]}</button>
+                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[2]}</button>
+                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[3]}</button>
+                    </div>
+                )
+            })
         getFormattedQuestions(formatedQuestions)
-        }, [props.questions])
+    }, [props.questions])
 
 
     function trySubmitAnswers() {
