@@ -1,13 +1,8 @@
 import React from "react";
+import {nanoid} from 'nanoid'
 
 export default function Quiz(props) {
-    const [questionValues, changeQuestionValues] = React.useState({
-        0: {correct: null, value: undefined},
-        1: {correct: null, value: undefined},
-        2: {correct: null, value: undefined},
-        3: {correct: null, value: undefined},
-        4: {correct: null, value: undefined},
-    })
+    const [questionValues, changeQuestionValues] = React.useState({})
     const [formatedQuestions, getFormattedQuestions] = React.useState(undefined)
     const [submitError, setSubmitError] = React.useState(false)
     const [arrayOfQuestions, setArrayOfQuestions] = React.useState([])
@@ -25,48 +20,49 @@ export default function Quiz(props) {
         return array;
       }
 
+    React.useEffect(() => {
+        const stepFormatedQuestions = props.questions.map(el => {
+        const line = shuffle([...el.incorrect_answers, el.correct_answer])
+        setArrayOfQuestions(prevArray => [
+            ...prevArray,
+            {ques: el.question, correct_answer: el.correct_answer, answ: [...line]},
+        ])
+    })
+    }, [])
+    
 
-    const formatedQuestions = props.questions.map(el => {
-            const line = shuffle([...el.incorrect_answers, el.correct_answer])
-            setArrayOfQuestions(prevArray => [...prevArray, line])
+    function chooseAnswer(event, correct_answer){
+        if (event.target.name === "answer"){
+            changeQuestionValues(prevQuestionVal => ({
+                ...prevQuestionVal, 
+                [event.target.id]: {correct: correct_answer, value: event.target.textContent}}))
+        }
+    }
 
     React.useEffect(() => {
-        function chooseAnswer(event, correct){
-            if (event.target.name === "answer"){
-                changeQuestionValues(prevQuestionVal => ({
-                    ...prevQuestionVal, 
-                    [event.target.id]: {correct: correct, value: event.target.textContent}}))
-            }
-        }
-
-
-                
+        const displayQuestions = arrayOfQuestions.map(el => {
+            const buttonsArray = el.answ.map(answer => (<button id={nanoid()} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{answer}</button>))
                 return (
                     <div>
-                        <h5>{el.question}</h5>
-                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[0]}</button>
-                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[1]}</button>
-                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[2]}</button>
-                        <button id={props.questions.indexOf(el)} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{line[3]}</button>
+                        <h5>{el.ques}</h5>
+                        {buttonsArray}
                     </div>
-                )
-            })
-        getFormattedQuestions(formatedQuestions)
-    }, [props.questions])
+                )})
+        getFormattedQuestions(displayQuestions)
+        return
+    }, [arrayOfQuestions])
 
 
     function trySubmitAnswers() {
         for (let i = 0; i < Object.keys(questionValues).length; i++){
-            console.log(questionValues[i])
-            if (!questionValues[i].value){
+            if (Object.keys(questionValues).length !== Object.keys(props.questions).length){
                 setSubmitError(true)
                 return
             }
         }
-        props.submitAnswers(questionValues)
+        props.submitAnswers(questionValues, arrayOfQuestions)
     }
     console.log(arrayOfQuestions)
-
     return (
         <div className="quiz">
             {formatedQuestions}
