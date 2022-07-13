@@ -68,7 +68,7 @@ export default function Quiz(props) {
     return (
         <div className="quiz">
             {formatedQuestions}
-            <button onClick={trySubmitAnswers}>Submit</button>
+            <button className="button submit" onClick={trySubmitAnswers}>Submit</button>
             {submitError && <h2>You didn't answer all questions</h2>}
         </div>
     )
