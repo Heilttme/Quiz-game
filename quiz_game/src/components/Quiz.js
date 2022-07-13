@@ -7,6 +7,7 @@ export default function Quiz(props) {
     const [submitError, setSubmitError] = React.useState(false)
     const [arrayOfQuestions, setArrayOfQuestions] = React.useState([])
 
+
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
       
@@ -31,21 +32,23 @@ export default function Quiz(props) {
     }, [])
     
 
-    function chooseAnswer(event, correct_answer){
+    function chooseAnswer(event, correct_answer, index){
         if (event.target.name === "answer"){
             changeQuestionValues(prevQuestionVal => ({
                 ...prevQuestionVal, 
-                [event.target.id]: {correct: correct_answer, value: event.target.textContent}}))
+                [index]: {correct: correct_answer, value: event.target.textContent}}))
         }
     }
 
     React.useEffect(() => {
         const displayQuestions = arrayOfQuestions.map(el => {
-            const buttonsArray = el.answ.map(answer => (<button id={nanoid()} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer)}>{answer}</button>))
+            const buttonsArray = el.answ.map(answer => (<button className="button" id={nanoid()} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer, arrayOfQuestions.indexOf(el))}>{answer}</button>))
                 return (
-                    <div>
-                        <h5>{el.ques}</h5>
-                        {buttonsArray}
+                    <div className="question-block">
+                        <p>{el.ques}</p>
+                        <div className="buttons-block">
+                            {buttonsArray}
+                        </div>
                     </div>
                 )})
         getFormattedQuestions(displayQuestions)
@@ -62,7 +65,6 @@ export default function Quiz(props) {
         }
         props.submitAnswers(questionValues, arrayOfQuestions)
     }
-    console.log(arrayOfQuestions)
     return (
         <div className="quiz">
             {formatedQuestions}

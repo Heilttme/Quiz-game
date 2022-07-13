@@ -2,17 +2,18 @@ body{
   display: flex;
   justify-content: center;
   font-family: Inter;
+  margin: 0;
 }
 
 #root{
   display: flex;
   align-items: center;
   justify-content: center;  
-  background-image: url("./images/bg.jpg");
-  width: 480px;
-  height: 430px;
+  background-image: url("./images/bg3.jpg");
+  width: 600px;
+  height: 660px;
   border: 1px solid   #1a8cff;
-  
+  background-size: cover;
 }
 
 .start-screen{
@@ -39,4 +40,30 @@ body{
 
 .start-screen p{
   font-weight: 600;
+}
+
+.quiz{
+  color: #293264;
+}
+
+.buttons-block{
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 170px 170px;
+  grid-column-gap: 20px;
+  grid-row-gap: 5px;
+}
+
+.button{
+  height: 25px;
+  border-radius: 7px;
+  border: none;
+}
+
+.correct{
+  background-color: green;
+}
+
+.incorrect{
+  background-color: red;
 }

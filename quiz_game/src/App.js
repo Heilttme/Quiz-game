@@ -13,13 +13,10 @@ export default function App() {
 
   const [questions, setQuestions] = React.useState([])
   const [result, setResult] = React.useState({})
-  const [classes, setClasses] = React.useState({
-    0: "button-answer",
-    1: "button-answer",
-    2: "button-answer",
-    3: "button-answer",
-    4: "button-answer",
-  })
+  const [parsedAnswers, parseAnswers] = React.useState([])
+
+  const [counterCorrect, incCorrect] = React.useState(0)
+  const [counterIncorrect, incIncorrect] = React.useState(0)
 
   function handleSetQuestions(chosenDifficulty){
     setResult(data.results)
@@ -40,25 +37,46 @@ export default function App() {
   };
 
   function submitAnswers(submittedAnswers, arrayOfQuestions){
-    const savedSubmittedAnswers = submittedAnswers
-    const savedArrayOfQuestions = arrayOfQuestions
-    // for (let i = 0; i < Object.keys(submittedAnswers).length; i++){
-    //   if (submittedAnswers[Object.keys(submittedAnswers)[i]].correct === submittedAnswers[Object.keys(submittedAnswers)[i]].value){
-    //     console.log(1)
-    //   } else {
-    //     console.log(2)
-    //   }
+    console.log(submittedAnswers)
+    console.log(arrayOfQuestions)
+    const displayQuestions = arrayOfQuestions.map(el => {
+      const buttonsArray = el.answ.map(answer => {
+        let classname = "button"
+        if (submittedAnswers[arrayOfQuestions.indexOf(el)].correct === submittedAnswers[arrayOfQuestions.indexOf(el)].value && submittedAnswers[arrayOfQuestions.indexOf(el)].value === answer){
+          classname = "button correct"
+          incCorrect(prev => prev += 1)
+        } else if(submittedAnswers[arrayOfQuestions.indexOf(el)].correct !== submittedAnswers[arrayOfQuestions.indexOf(el)].value && submittedAnswers[arrayOfQuestions.indexOf(el)].value === answer){
+          classname = "button incorrect"
+        }
+        return (<button className={classname} name="answer">{answer}</button>)
+      })
+      incIncorrect(prev => prev += 1)
+      return (
+          <div className="question-block">
+              <p>{el.ques}</p>
+              <div className="buttons-block">
+                  {buttonsArray}
+              </div>
+          </div>
+      )})
+    parseAnswers(displayQuestions)
     startQuiz(false)
     handleEndQuiz(true)
-    // }
+  }
+
+  function startAgain(){
+    handleEndQuiz(false)
+    startChoosingDifficulty(true)
+    incCorrect(0)
+    incIncorrect(0)
   }
   
   return (
     <div className="App">
       {begin && <Start handleChooseDifficulty={handleChooseDifficulty}/>}
       {chooseDifficulty && <Difficulty handleStartQuiz={handleStartQuiz} />}
-      {quizStarted && <Quiz questions={questions} submitAnswers={submitAnswers} classes={classes} />}
-      {quizEnded && <EndQuiz submittedAnswers={savedSubmittedAnswers} arrayOfQuestions={savedArrayOfQuestions} />}
+      {quizStarted && <Quiz questions={questions} submitAnswers={submitAnswers}/>}
+      {quizEnded && <EndQuiz parsedAnswers={parsedAnswers} counterCorrect={counterCorrect} counterIncorrect={counterIncorrect} startAgain={startAgain}/>}
       {/* {chooseDifficulty ? quizStarted ? <Quiz questions={questions} submitAnswers={submitAnswers} classes={classes} /> : <Difficulty handleStartQuiz={handleStartQuiz} /> : <Start handleChooseDifficulty={handleChooseDifficulty}/>} */}
     </div>
   );
