@@ -11,9 +11,10 @@ body{
   justify-content: center;  
   background-image: url("./images/bg4.jpg");
   width: 600px;
-  height: 660px;
+  height: 680px;
   border: 1px solid   #1a8cff;
   background-size: cover;
+  color: #293264;
 }
 
 .start-screen{
@@ -42,8 +43,9 @@ body{
   font-weight: 600;
 }
 
-.quiz{
-  color: #293264;
+.quiz p{
+  font-weight: 800;
+  margin-left: 20px;
 }
 
 .buttons-block{
@@ -58,6 +60,13 @@ body{
   height: 25px;
   border-radius: 7px;
   border: none;
+  cursor: pointer;
+}
+
+.button:hover{
+  background-color: #fff;
+  border-color: transparent;
+  color: #444;
 }
 
 .correct{
@@ -66,4 +75,8 @@ body{
 
 .incorrect{
   background-color: red;
+}
+
+.button-submit{
+  margin: 20px;
 }

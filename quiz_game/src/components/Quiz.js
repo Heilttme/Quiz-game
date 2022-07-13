@@ -6,6 +6,7 @@ export default function Quiz(props) {
     const [formatedQuestions, getFormattedQuestions] = React.useState(undefined)
     const [submitError, setSubmitError] = React.useState(false)
     const [arrayOfQuestions, setArrayOfQuestions] = React.useState([])
+    const [arrayOfChosenButtons, setArrayOfChosenButtons] = React.useState([])
 
 
     function shuffle(array) {
@@ -68,7 +69,7 @@ export default function Quiz(props) {
     return (
         <div className="quiz">
             {formatedQuestions}
-            <button className="button submit" onClick={trySubmitAnswers}>Submit</button>
+            <button className="button button-submit" onClick={trySubmitAnswers}>Submit answers</button>
             {submitError && <h2>You didn't answer all questions</h2>}
         </div>
     )
