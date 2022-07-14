@@ -6,7 +6,8 @@ export default function Quiz(props) {
     const [formatedQuestions, getFormattedQuestions] = React.useState(undefined)
     const [submitError, setSubmitError] = React.useState(false)
     const [arrayOfQuestions, setArrayOfQuestions] = React.useState([])
-    const [arrayOfChosenButtons, setArrayOfChosenButtons] = React.useState([])
+    // const [arrayOfChosenButtons, setArrayOfChosenButtons] = React.useState([])
+    const [counter, incCounter] = React.useState(0)
 
 
     function shuffle(array) {
@@ -27,24 +28,34 @@ export default function Quiz(props) {
         const line = shuffle([...el.incorrect_answers, el.correct_answer])
         setArrayOfQuestions(prevArray => [
             ...prevArray,
-            {ques: el.question, correct_answer: el.correct_answer, answ: [...line]},
+            {ques: el.question, correct_answer: el.correct_answer, answ: [...line], chosenAnswer: ""},
         ])
     })
     }, [])
     
 
-    function chooseAnswer(event, correct_answer, index){
-        if (event.target.name === "answer"){
-            changeQuestionValues(prevQuestionVal => ({
-                ...prevQuestionVal, 
-                [index]: {correct: correct_answer, value: event.target.textContent}}))
-        }
-    }
-
+    
     React.useEffect(() => {
+        function chooseAnswer(event, arrayOfQuestions, correct_answer, index){
+            if (event.target.name === "answer"){
+                for (let i = 0; i < arrayOfQuestions.length; i++){
+                    if (arrayOfQuestions[i].answ.includes(event.target.textContent)){
+                        setArrayOfQuestions(prev => {
+                            prev[i] = {...prev[i], chosenAnswer: event.target.textContent}
+                            return prev
+                        })
+                        incCounter(prev => prev += 1)
+                    }
+                }
+                changeQuestionValues(prevQuestionVal => ({
+                    ...prevQuestionVal, 
+                    [index]: {correct: correct_answer, value: event.target.textContent}}))
+            }
+        }
+
         const displayQuestions = arrayOfQuestions.map(el => {
-            const buttonsArray = el.answ.map(answer => (<button className="button" id={nanoid()} name="answer" onClick={(event) => chooseAnswer(event, el.correct_answer, arrayOfQuestions.indexOf(el))}>{answer}</button>))
-                return (
+            const buttonsArray = el.answ.map(answer => (<button className={el.chosenAnswer === answer ? "button chosen" : "button"} id={nanoid()} name="answer" onClick={(event) => chooseAnswer(event, arrayOfQuestions, el.correct_answer, arrayOfQuestions.indexOf(el))}>{answer}</button>))
+            return (
                     <div className="question-block">
                         <p>{el.ques}</p>
                         <div className="buttons-block">
@@ -53,8 +64,7 @@ export default function Quiz(props) {
                     </div>
                 )})
         getFormattedQuestions(displayQuestions)
-        return
-    }, [arrayOfQuestions])
+    }, [arrayOfQuestions, counter])
 
 
     function trySubmitAnswers() {
@@ -66,6 +76,10 @@ export default function Quiz(props) {
         }
         props.submitAnswers(questionValues, arrayOfQuestions)
     }
+
+    console.log(arrayOfQuestions)
+    console.log(counter)
+
     return (
         <div className="quiz">
             {formatedQuestions}

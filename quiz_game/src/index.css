@@ -43,6 +43,22 @@ body{
   font-weight: 600;
 }
 
+.choose-difficulty{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.difficulty-buttons{
+  display: grid;
+  grid-template-columns: 80px 80px 80px;
+  grid-column-gap: 10px;
+}
+
+.continue{
+  margin-top: 25px;
+}
+
 .quiz p{
   font-weight: 800;
   margin-left: 20px;
@@ -75,6 +91,10 @@ body{
 
 .incorrect{
   background-color: red;
+}
+
+.chosen{
+  background-color: #787878;
 }
 
 .button-submit{
