@@ -9,14 +9,18 @@ export default function Quiz(props) {
     const [counter, incCounter] = React.useState(0)
     const [fetchedQuestions, setFetchedQuestions] = React.useState([])
 
-
     React.useEffect(() => {
         const getData = async () => {
             const data = await fetch(`https://opentdb.com/api.php?amount=5&difficulty=${props.chosenDifficulty}&type=multiple`)
                 .then(data => data.json())
                 .then(res => res)
-            setFetchedQuestions(data.results)
-            props.setQuestions(data.results)
+            let dataRes = data.results
+            dataRes = dataRes.map(el => {
+                console.log(el)
+                console.log(el.question.replace("&quot;", '"').replace("&#039;", "'"))
+                return {...el, question: el.question.replace("&quot;", '"').replace("&#039;", "'")}})
+            setFetchedQuestions(dataRes)
+            props.setQuestions(dataRes)
             incCounter(prev => prev += 1)
         }
         getData()
@@ -39,10 +43,11 @@ export default function Quiz(props) {
     React.useEffect(() => {
         const stepFormatedQuestions = fetchedQuestions.map(el => {
         const line = shuffle([...el.incorrect_answers, el.correct_answer])
-        setArrayOfQuestions(prevArray => [
+        setArrayOfQuestions(prevArray => {
+            return [
             ...prevArray,
             {ques: el.question, correct_answer: el.correct_answer, answ: [...line], chosenAnswer: ""},
-        ])
+        ]})
     })
     }, [fetchedQuestions])
     
@@ -90,7 +95,8 @@ export default function Quiz(props) {
         props.submitAnswers(questionValues, arrayOfQuestions)
     }
 
-    console.log(arrayOfQuestions)
+
+    // console.log(arrayOfQuestions)    
 
     return (
         <div className="quiz">
