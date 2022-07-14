@@ -11,7 +11,7 @@ body{
   justify-content: center;  
   background-image: url("./images/bg4.jpg");
   width: 600px;
-  height: 680px;
+  height: 790px;
   border: 1px solid   #1a8cff;
   background-size: cover;
   color: #293264;
@@ -73,7 +73,7 @@ body{
 }
 
 .button{
-  height: 25px;
+  height: 32px;
   border-radius: 7px;
   border: none;
   cursor: pointer;
@@ -87,10 +87,12 @@ body{
 
 .correct{
   background-color: green;
+  color: white
 }
 
 .incorrect{
   background-color: red;
+  color: white;
 }
 
 .chosen{
@@ -99,4 +101,12 @@ body{
 
 .button-submit{
   margin: 20px;
+}
+
+.try{
+  margin-left: 40px;
+}
+
+.score{
+  margin-left: 40px;
 }

@@ -70,7 +70,6 @@ export default function App() {
       {chooseDifficulty && <Difficulty handleStartQuiz={handleStartQuiz} />}
       {quizStarted && <Quiz questions={questions} submitAnswers={submitAnswers} setQuestions={setQuestions} chosenDifficulty={chosenDifficulty}/>}
       {quizEnded && <EndQuiz parsedAnswers={parsedAnswers} counterCorrect={counterCorrect} counterIncorrect={counterIncorrect} startAgain={startAgain}/>}
-      {/* {chooseDifficulty ? quizStarted ? <Quiz questions={questions} submitAnswers={submitAnswers} classes={classes} /> : <Difficulty handleStartQuiz={handleStartQuiz} /> : <Start handleChooseDifficulty={handleChooseDifficulty}/>} */}
     </div>
   );
 }

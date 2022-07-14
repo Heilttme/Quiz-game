@@ -17,6 +17,7 @@ export default function Quiz(props) {
                 .then(res => res)
             setFetchedQuestions(data.results)
             props.setQuestions(data.results)
+            incCounter(prev => prev += 1)
         }
         getData()
       }, [props.chosenDifficulty])
@@ -43,7 +44,7 @@ export default function Quiz(props) {
             {ques: el.question, correct_answer: el.correct_answer, answ: [...line], chosenAnswer: ""},
         ])
     })
-    }, [])
+    }, [fetchedQuestions])
     
 
     
@@ -76,7 +77,7 @@ export default function Quiz(props) {
                     </div>
                 )})
         getFormattedQuestions(displayQuestions)
-    }, [fetchedQuestions, counter])
+    }, [arrayOfQuestions, counter])
 
 
     function trySubmitAnswers() {
@@ -89,13 +90,13 @@ export default function Quiz(props) {
         props.submitAnswers(questionValues, arrayOfQuestions)
     }
 
-    console.log(fetchedQuestions)
+    console.log(arrayOfQuestions)
 
     return (
         <div className="quiz">
             {formatedQuestions}
             <button className="button button-submit" onClick={trySubmitAnswers}>Submit answers</button>
-            {submitError && <h2>You didn't answer all questions</h2>}
+            {submitError && <h4>You didn't answer all questions</h4>}
         </div>
     )
 }
