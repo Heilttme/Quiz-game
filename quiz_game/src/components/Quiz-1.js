@@ -11,14 +11,15 @@ export default function Quiz(props) {
 
     React.useEffect(() => {
         const getData = async () => {
-            const data = await fetch(`https://opentdb.com/api.php?amount=5&difficulty=${props.chosenDifficulty}&type=multiple`)
+            let data = await fetch(`https://opentdb.com/api.php?amount=5&difficulty=${props.chosenDifficulty}&type=multiple`)
                 .then(data => data.json())
                 .then(res => res)
             let dataRes = data.results
+            console.log(dataRes)
             dataRes = dataRes.map(el => {
-                console.log(el)
-                console.log(el.question.replace("&quot;", '"').replace("&#039;", "'"))
-                return {...el, question: el.question.replace("&quot;", '"').replace("&#039;", "'")}})
+                el.question = el.question.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#039;/g, "'")
+
+                return {...el, question: el.question.replace("&quot;", '"').replace("&#039;", "'").replace("&amp;", '&'), incorrect_answers: el.incorrect_answers.map(answer => answer.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#039;/g, "'"))}})
             setFetchedQuestions(dataRes)
             props.setQuestions(dataRes)
             incCounter(prev => prev += 1)
