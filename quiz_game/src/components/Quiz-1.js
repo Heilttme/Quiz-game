@@ -15,7 +15,6 @@ export default function Quiz(props) {
                 .then(data => data.json())
                 .then(res => res)
             let dataRes = data.results
-            console.log(dataRes)
             dataRes = dataRes.map(el => {
                 el.question = el.question.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#039;/g, "'")
 
@@ -96,8 +95,6 @@ export default function Quiz(props) {
         props.submitAnswers(questionValues, arrayOfQuestions)
     }
 
-
-    // console.log(arrayOfQuestions)    
 
     return (
         <div className="quiz">
